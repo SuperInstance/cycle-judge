@@ -116,3 +116,15 @@ real server, and it prints a table of real verdicts.
 `client.decide(url, model, state, questions) -> {id: (choice, conf)}` never
 raises. Unanswerable questions return `(UNAVAILABLE, 0.0)`, so a transport
 failure degrades one signal rather than killing the judge.
+## Deployment note (eval round 2, 2026-10-16 — read EVAL.md)
+
+With laya-only, the model paths degrade exactly as the distillation law
+predicts: 0/6 novel injection attacks annotated (fail-open to pass; the
+social-engineering probe was confidently mis-endorsed at 0.61), 0/4
+dishonest claims flagged (all safely UNVERIFIED — fail-closed held, no
+false PASS), while the deterministic rules carried everything they owned
+(flail 2/2). Deployment rule: **deterministic rules are the load-bearing
+layer; model judgment requires a winnow-class model or better; laya-only
+is acceptable only where a miss costs one no-op cycle.** Never let the
+injection screen gate wake decisions, and never let a single small model
+be the only thing between a claim and MEMORY.md.
